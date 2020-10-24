@@ -1,26 +1,8 @@
-//fetch("http://belikemiszel.com/bikes/wp-json/wp/v2/bike")
-//    .then(initial => initial.json())
-//    .then(callback);
-//
-//function callback(data) {
-//    data.forEach(showBike);
-//}
-//
-//function showBike(singleBike) {
-//    console.log(singleBike);
-//    const template = document.querySelector('template').content;
-//    const clone = template.cloneNode(true);
-//
-//
-//    clone.querySelector('h2').textContent = singleBike.title;
-//
-//    const mainEl = document.querySelector('main');
-//    main.appendChild(clone);
-//}
+const URL = `http://belikemiszel.com/bikes/wp-json/wp/v2/bike?_embed`;
 
 getData();//fetching products
 function getData(){
-    fetch("http://belikemiszel.com/bikes/wp-json/wp/v2/bike_embed")
+    fetch(URL)
     .then(function(response){
         return response.json();
     })
@@ -28,21 +10,60 @@ function getData(){
 }
 //showing products
 function showPosts(posts){
-    //console.log(posts);
     posts.forEach(showBike);
 }
-function showBike(bike){
+async function showBike(bike){
     console.log(bike);
-    const temp= document.querySelector("template").content;
+
+	const setData = (scope, selector, dataMap) => {
+		const htmlObject = scope.querySelector(selector);
+		htmlObject.append(dataMap);
+	}
+
+	const setDataById = (scope, id, dataMap) => {
+		const htmlObject = scope.getElementById(id);
+		htmlObject.append(dataMap);
+	}
+
+	const setColor = (scope, color) => {
+		const colorHtmlObject = scope.getElementById('color');
+		colorHtmlObject.innerHTML = `<div class="color-tile" style="background-color: ${color}"></div>`
+	}
+
+    const template = document.querySelector("template").content;
     //clone  the template
-    const myCopy=temp.cloneNode(true);
-    //showimgs
-    const img =myCopy.querySelector("img");
+    const myCopy = template.cloneNode(true);
+
+    //set price
+	setData(myCopy, "p", bike.price);
+
+    //set name
+    setData(myCopy, "h3", bike.title.rendered);
+
+    //set color
+	setColor(myCopy, bike.color);
+
+    //set in_stock
+	setDataById(myCopy, "stock", bike.in_stock);
+
+	//set categories
+	setData(myCopy, "h4", await getCategoryNameById(bike.categories[0]))
+
+	//showimgs
+    const img = myCopy.querySelector("img");
     img.setAttribute("src",bike._embedded["wp:featuredmedia"][0].media_details.sizes.medium.source_url);
-    document.querySelector('main').appendChild(myCopy)
+
+    document.getElementById('view').appendChild(myCopy)
 }
-function showColor(color){
-    const liEl=
-          document.createElement(li);
-    liEl.textContent=color;
+
+async function getCategoryNameById(categoryId) {
+
+	const CATEGORIY_URL = `http://belikemiszel.com/bikes/wp-json/wp/v2/categories/${categoryId}`;
+
+	const data = await fetch(CATEGORIY_URL)
+	.then(result => {
+		return result.json();
+	});
+
+	return data.name;
 }

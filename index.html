@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bicycle Site</title>
-    <link href="css/main.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="style.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -16,27 +17,30 @@
         </nav>
     </header>
     <main>
-
-        <template>
-
-            <article>
-                <img alt="bikeimg" src="img/1.jpg" />
-                <h4> <a class="category_name">category</a></h4>
-                <h3 class="bike_name">Name</h3>
-                <p class="price">Price</p>
-                <ul class="colors">color</ul>
-                <p class="stock">5</p>
-            </article>
-            <button>FULL SPECS</button>
-        </template>
-
+		<div class="container" id="view">
+			<div class="row">
+				<template class="col">
+					<article>
+						<img alt="bikeimg" src="img/1.jpg" />
+						<h4></h4>
+						<h3 class="bike_name"></h3>
+						<p class="price">Price: </p>
+						<div id="color"></div>
+						<p id="stock">In stock: </p>
+					</article>
+					<div class="text-left">
+						<button class="btn btn-outline-primary">FULL SPECS</button>
+					</div>
+				</template>
+			</div>
+		</div>
     </main>
 
     <footer>
         <p>Copyright &copy; BeLM</p>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
